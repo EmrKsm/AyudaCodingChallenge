@@ -1,0 +1,32 @@
+﻿@model BeersForAyuda.Models.Style
+
+@{
+    ViewBag.Title = "Browse Styles";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="styles">
+
+    <h4><em>@Model.Name</em> Beers</h4>
+    <p>
+        <em>Description:</em>
+        @Model.Description
+    </p>
+    @if (Model.Beers.Count == 0)
+    {
+        <p>There is no beer in this style.</p>
+    }
+    else
+    {
+        <ul id="style-list">
+            @foreach (var beer in Model.Beers)
+            {
+                <li>
+                    <a href="@Url.Action("Details", "Beer", new { Id = beer.Id })">
+                        <span>@beer.Name</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    }
+</div>

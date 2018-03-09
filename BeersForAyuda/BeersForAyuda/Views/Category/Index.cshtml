@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BeersForAyuda.Models.Category>
+@using BeersForAyuda.Common
+@{
+    ViewBag.Title = "Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Browse Categories</h2>
+
+<p>
+    Select from @Model.Count()
+    categories:
+</p>
+
+@foreach (var row in Model.ToArray().Split(3))
+{
+    <div class="row">
+        @{
+            foreach (var category in row)
+            {
+                <div class="col-4">
+
+                    @if (category.Name != "\"\"")
+                    {
+                        <h4>@category.Name</h4>
+                        <ul>
+                            @foreach (var style in category.Styles)
+                            {
+                                <li>
+                                    <a href="@Url.Action("Browse", "Style", new { id = style.Id })">
+                                        <span>@style.Name</span>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+
+                </div>
+            }
+        }
+    </div>
+
+}

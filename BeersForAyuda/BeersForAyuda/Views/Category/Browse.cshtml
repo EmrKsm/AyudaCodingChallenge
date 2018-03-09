@@ -1,0 +1,24 @@
+﻿@model BeersForAyuda.Models.Category
+
+@{
+    ViewBag.Title = "Browse Categories";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="category">
+
+    <h4><em>@Model.Name</em> Styles</h4>
+    <ul id="style-list">
+
+        @foreach (var style in Model.Styles)
+        {
+            <li>
+                <a href="@Url.Action("Browse","Style",new{id = style.Id})">
+                    <span>@style.Name</span>
+                </a>
+                <br />
+                <span>@style.Description</span>
+            </li>
+        }
+    </ul>
+</div>
