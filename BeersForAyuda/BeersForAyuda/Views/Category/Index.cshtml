@@ -2,7 +2,7 @@
 @using BeersForAyuda.Common
 @{
     ViewBag.Title = "Category";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/pages_layout.cshtml";
 }
 
 <h2>Browse Categories</h2>
@@ -11,33 +11,28 @@
     Select from @Model.Count()
     categories:
 </p>
+@*.ToArray().Split(3)*@
 
-@foreach (var row in Model.ToArray().Split(3))
-{
-    <div class="row">
-        @{
-            foreach (var category in row)
-            {
-                <div class="col-4">
+<div class="row">
+    @foreach (var category in Model)
+    {
 
-                    @if (category.Name != "\"\"")
+        <div class="col-sm-4">
+
+            @if (category.Name != "\"\"")
+                {
+                <h4>@category.Name</h4>
+                <ul>
+                    @foreach (var style in category.Styles)
                     {
-                        <h4>@category.Name</h4>
-                        <ul>
-                            @foreach (var style in category.Styles)
-                            {
-                                <li>
-                                    <a href="@Url.Action("Browse", "Style", new { id = style.Id })">
-                                        <span>@style.Name</span>
-                                    </a>
-                                </li>
-                            }
-                        </ul>
+                        <li>
+                            <a href="@Url.Action("Browse", "Style", new { id = style.Id })">
+                                <span>@style.Name</span>
+                            </a>
+                        </li>
                     }
-
-                </div>
+                </ul>
             }
-        }
+        </div>
+    }
     </div>
-
-}

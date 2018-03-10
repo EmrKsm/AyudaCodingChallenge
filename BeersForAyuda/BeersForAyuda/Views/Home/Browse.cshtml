@@ -1,0 +1,124 @@
+﻿@model IEnumerable<BeersForAyuda.Models.Beer>
+
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/pages_layout.cshtml";
+}
+
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" language="javascript" src="~/Scripts/filterDropDown.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        var table = $('#BeerList').DataTable({
+            initComplete: function () {
+                $("#BeerList_filter").detach().appendTo('#search-area');
+                this.api().column(3).every(function () {
+                    var column = this;
+                    var select = $('<select class="form-control"><option value=""></option></select>')
+                        .appendTo($("#orgDropDown").empty())
+                        .on('change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column
+                                .search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+                    column.data().unique().sort().each(function (d, j) {
+                        select.append('<option value="' + d + '">' + d + '</option>')
+                    });
+                });
+            },
+            "bLengthChange": false,
+            "aoColumns": [{ "bSearchable": true }, { "bSearchable": false }, { "bSearchable": false }, { "bSearchable": true }, { "bSearchable": false }]
+        });
+        $('#search-area').on('keyup', function () {
+            table
+            .column(0)
+            .search(this.value)
+            .draw();
+        });
+    });
+
+</script>
+<div class="modal-body row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="search-area">Search by name: </label>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="search-area">
+            </div>
+            
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <div class="col-md-6">
+                <label for="search-area">Filter by organic: </label>
+            </div>
+            <div class="col-md-6">
+                <div class="dropdown" id="orgDropDown"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dvTable" style="padding-top:10px;">
+    <table id="BeerList" class="table">
+        <thead>
+            <tr>
+                <th>
+                    Beer Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Alcohol Volume
+                </th>
+                <th>
+                    Is Organic
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var organic = "No";
+                <tr>
+                    <td>
+                        <a href="@Url.Action("Details", "Beer",new { id = item.Id})">
+                            <span>@item.NameDisplay</span>
+                        </a>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Abv)
+                    </td>
+                    <td>
+                        @if(item.IsOrganic == "Y")
+                        {
+                            organic = "Yes";
+                        }
+                        else
+                        {
+                            organic = "No";
+                        }
+                        @organic
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StatusDisplay)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

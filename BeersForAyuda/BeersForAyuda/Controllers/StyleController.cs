@@ -25,19 +25,27 @@ namespace BeersForAyuda.Controllers
 
         public Style GetStyleById(int Id)
         {
-            Style style = null;
-            var result = JsonConvert.DeserializeObject<StyleJson>(APICaller.CreateResponse($"{_url}style/{Id}/"));
-            if (result.Status == "success")
+            try
             {
-                style = result.Data;
+                Style style = null;
+                var result = JsonConvert.DeserializeObject<StyleJson>(APICaller.CreateResponse($"{_url}style/{Id}/"));
+                if (result.Status == "success")
+                {
+                    style = result.Data;
+                }
+                var beers = HttpRuntime.Cache["beers"] as List<Beer>;
+                style.Beers = new List<Beer>();
+                foreach (var beer in beers.Where(b => b.StyleId == style.Id).ToList())
+                {
+                    style.Beers.Add(beer);
+                }
+                return style;
             }
-            var beers = HttpRuntime.Cache["beers"] as List<Beer>;
-            style.Beers = new List<Beer>();
-            foreach (var beer in beers.Where(b => b.StyleId == style.Id).ToList())
+            catch (System.Exception ex)
             {
-                style.Beers.Add(beer);
+                LogProvider.Error(ex.Message, 0);
+                throw ex;
             }
-            return style;
         }
     }
 }

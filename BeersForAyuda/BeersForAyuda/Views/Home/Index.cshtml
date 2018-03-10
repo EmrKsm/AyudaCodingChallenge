@@ -1,0 +1,30 @@
+﻿@model IEnumerable<BeersForAyuda.Models.Beer>
+@{
+    ViewBag.Title = "Home";
+    Layout = "~/Views/Shared/home_layout.cshtml";
+}
+
+@{
+    foreach (var beer in Model)
+    {
+        <div class="col-lg-4 col-sm-6 portfolio-item">
+            <div class="card h-100">
+                @if (beer.ImgLabels != null)
+                {
+                    <a href="@Url.Action("Details", "Beer", new { id = beer.Id })"><img class="card-img-top" src="@beer.ImgLabels.Medium" alt=""></a>
+                }
+                else
+                {
+                    <a href="@Url.Action("Details", "Beer", new { id = beer.Id })"><img class="card-img-top" src="~/Content/images/imageNotFound.jpg" alt=""></a>
+                }
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="@Url.Action("Details", "Beer", new { id = beer.Id })">@beer.Name</a>
+                    </h4>
+                    <p class="card-text">Alcohol volume: @beer.Abv</p>
+                    <p class="card-text">@beer.Available.Description</p>
+                </div>
+            </div>
+        </div>
+    }
+}

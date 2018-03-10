@@ -7,7 +7,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F0C5C5CB-72A8-4517-8B6C-F819901F670C}</ProjectGuid>
+    <ProjectGuid>{AB25294C-AF07-4191-B366-487DF39C299B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BeersForAyuda.Tests</RootNamespace>
@@ -108,6 +108,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\BeerControllerTest.cs" />
+    <Compile Include="Controllers\HomeControllerTest.cs" />
     <Compile Include="Controllers\StyleControllerTest.cs" />
     <Compile Include="Controllers\CategoryControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
